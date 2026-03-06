@@ -536,6 +536,32 @@
             border-left: 4px solid #10b981;
         }
 
+        .view-report-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .view-report-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .view-report-btn:active {
+            transform: translateY(0);
+        }
+
         @media (max-width: 768px) {
             .modal-content {
                 width: 95%;
@@ -768,10 +794,13 @@
                                 <div class="record-title">电子电力实验室设备冷却液泄露火灾</div>
                                 <div class="record-desc">电子电力实验室大型测试设备冷却系统管道老化破裂，导致冷却液泄露并接触高温部件引发火灾。现场人员立即启动应急预案，使用灭火器控制火势，并疏散实验室人员。消防队到场后彻底扑灭火源，无人员伤亡。事故造成设备严重损坏，实验室停用整改。</div>
                                 <div class="record-tags">
-                                    <span class="tag tag-warning">重大事故</span>
+                                    <span class="tag tag-minor">一般事故</span>
                                     <span class="tag tag-equipment">设备损坏</span>
                                     <span class="tag tag-handled">已处理</span>
                                 </div>
+                                <a href="事故报告.pdf" target="_blank" class="view-report-btn">
+                                    📄 查看详细事故报告
+                                </a>
                             </div>
                         </div>
                     </div>
