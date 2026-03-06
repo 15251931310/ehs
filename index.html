@@ -563,6 +563,37 @@
             });
         }
 
+        // 计算安全运行天数（从2025年5月14日开始）
+        function updateSafetyDays() {
+            const startDate = new Date('2025-05-14');
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // 重置到当天零点
+            startDate.setHours(0, 0, 0, 0);
+
+            const diffTime = today - startDate;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+            document.getElementById('safetyDays').textContent = diffDays;
+        }
+
+        // 计算到下一个零点的毫秒数
+        function getMillisecondsUntilMidnight() {
+            const now = new Date();
+            const midnight = new Date();
+            midnight.setHours(24, 0, 0, 0);
+            return midnight - now;
+        }
+
+        // 设置每天零点更新安全天数
+        function scheduleNextMidnightUpdate() {
+            const msUntilMidnight = getMillisecondsUntilMidnight();
+            setTimeout(() => {
+                updateSafetyDays();
+                // 递归设置下一次零点更新
+                scheduleNextMidnightUpdate();
+            }, msUntilMidnight);
+        }
+
         // 模拟实时数据更新
         function simulateRealTimeData() {
             // 温度在21-24度之间波动
@@ -585,12 +616,16 @@
         // 初始化
         updateTime();
         generateMonthlyChart();
+        updateSafetyDays(); // 初始化安全运行天数
 
         // 每秒更新时间
         setInterval(updateTime, 1000);
 
         // 每10秒更新一次模拟数据
         setInterval(simulateRealTimeData, 10000);
+
+        // 设置每天零点自动更新安全天数
+        scheduleNextMidnightUpdate();
 
         // 添加页面加载动画
         window.addEventListener('load', function() {
