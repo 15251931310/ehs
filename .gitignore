@@ -1,0 +1,12 @@
+# 备份文件夹 - 不上传到GitHub
+backups/
+
+# 临时文件
+*.tmp
+*.bak
+~*
+
+# 系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
