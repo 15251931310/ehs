@@ -330,6 +330,226 @@
             font-size: 0.85em;
             color: #666;
         }
+
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 3% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideDown 0.4s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close {
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            line-height: 1;
+        }
+
+        .close:hover {
+            transform: scale(1.2) rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 30px;
+            max-height: calc(85vh - 100px);
+            overflow-y: auto;
+        }
+
+        .record-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .summary-item {
+            background: linear-gradient(135deg, #f6f8fb 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+        }
+
+        .summary-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #f59e0b;
+            margin-bottom: 5px;
+        }
+
+        .summary-label {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .records-section {
+            margin-top: 30px;
+        }
+
+        .records-section h3 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            font-size: 1.2em;
+        }
+
+        .record-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .record-item {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #f59e0b;
+            transition: all 0.3s ease;
+        }
+
+        .record-item:hover {
+            background: #f3f4f6;
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .record-date {
+            color: #999;
+            font-size: 0.85em;
+            margin-bottom: 8px;
+        }
+
+        .record-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .record-desc {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .record-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+
+        .tag-minor {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .tag-warning {
+            background: #fed7aa;
+            color: #9a3412;
+        }
+
+        .tag-injury {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .tag-equipment {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .tag-handled {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .records-footer {
+            margin-top: 30px;
+            padding: 20px;
+            background: #d1fae5;
+            border-radius: 10px;
+            border-left: 4px solid #10b981;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+
+            .modal-body {
+                padding: 20px;
+            }
+
+            .record-summary {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -351,11 +571,12 @@
                 <span class="status-badge status-normal">状态正常</span>
             </div>
 
-            <div class="stat-card safety">
+            <div class="stat-card safety" id="safetyCard" style="cursor: pointer;" title="点击查看事故记录">
                 <h3><span class="icon">🛡️</span>安全指标</h3>
                 <div class="stat-value" id="safetyDays">127</div>
                 <div class="stat-label">安全运行天数</div>
                 <span class="status-badge status-normal">零事故</span>
+                <div style="margin-top: 10px; font-size: 0.85em; color: #666;">💡 点击查看详情</div>
             </div>
 
             <div class="stat-card health">
@@ -516,6 +737,93 @@
             </div>
         </div>
 
+        <!-- 事故记录模态框 -->
+        <div id="accidentModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><span class="icon">📋</span>安全事故记录</h2>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="record-summary">
+                        <div class="summary-item">
+                            <div class="summary-value" id="modalSafetyDays">0</div>
+                            <div class="summary-label">安全运行天数</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-value" style="color: #10b981;">0</div>
+                            <div class="summary-label">本年度事故</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-value" style="color: #3b82f6;">5</div>
+                            <div class="summary-label">历史记录</div>
+                        </div>
+                    </div>
+
+                    <div class="records-section">
+                        <h3>历史事故记录</h3>
+                        <div class="record-list">
+                            <div class="record-item">
+                                <div class="record-date">2025年5月13日</div>
+                                <div class="record-title">轻微化学品溅洒事件</div>
+                                <div class="record-desc">实验过程中，少量酸性溶液溅出试管，及时处理，无人员受伤</div>
+                                <div class="record-tags">
+                                    <span class="tag tag-minor">轻微</span>
+                                    <span class="tag tag-handled">已处理</span>
+                                </div>
+                            </div>
+
+                            <div class="record-item">
+                                <div class="record-date">2024年12月8日</div>
+                                <div class="record-title">设备故障导致烟雾告警</div>
+                                <div class="record-desc">加热设备温控失效，引发烟雾探测器告警，消防人员到场确认无火情</div>
+                                <div class="record-tags">
+                                    <span class="tag tag-minor">轻微</span>
+                                    <span class="tag tag-handled">已处理</span>
+                                </div>
+                            </div>
+
+                            <div class="record-item">
+                                <div class="record-date">2024年8月22日</div>
+                                <div class="record-title">人员轻微割伤</div>
+                                <div class="record-desc">玻璃器皿破碎时操作不当，造成手指轻微割伤，已进行紧急处理并送医包扎</div>
+                                <div class="record-tags">
+                                    <span class="tag tag-injury">人员受伤</span>
+                                    <span class="tag tag-handled">已处理</span>
+                                </div>
+                            </div>
+
+                            <div class="record-item">
+                                <div class="record-date">2024年5月15日</div>
+                                <div class="record-title">气体泄漏预警</div>
+                                <div class="record-desc">气体检测仪显示微量气体泄漏，立即疏散人员并进行通风处理</div>
+                                <div class="record-tags">
+                                    <span class="tag tag-warning">预警</span>
+                                    <span class="tag tag-handled">已处理</span>
+                                </div>
+                            </div>
+
+                            <div class="record-item">
+                                <div class="record-date">2023年11月3日</div>
+                                <div class="record-title">电气设备短路</div>
+                                <div class="record-desc">老旧设备线路老化导致短路跳闸，已更换设备并加强电气安全检查</div>
+                                <div class="record-tags">
+                                    <span class="tag tag-equipment">设备故障</span>
+                                    <span class="tag tag-handled">已处理</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="records-footer">
+                        <p style="color: #666; font-size: 0.9em; text-align: center;">
+                            自2025年5月14日起，实验室保持零事故记录
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="footer">
             <p>实验室EHS管理系统 v1.0 | 数据实时更新</p>
             <p>Environment · Health · Safety</p>
@@ -639,6 +947,44 @@
                     card.style.transform = 'translateY(0)';
                 }, index * 100);
             });
+        });
+
+        // 模态框控制
+        const modal = document.getElementById('accidentModal');
+        const safetyCard = document.getElementById('safetyCard');
+        const closeBtn = document.querySelector('.close');
+
+        // 点击安全指标卡片打开模态框
+        safetyCard.addEventListener('click', function() {
+            modal.style.display = 'block';
+            // 同步安全运行天数到模态框
+            const safetyDays = document.getElementById('safetyDays').textContent;
+            document.getElementById('modalSafetyDays').textContent = safetyDays;
+            // 禁止body滚动
+            document.body.style.overflow = 'hidden';
+        });
+
+        // 点击关闭按钮关闭模态框
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+            // 恢复body滚动
+            document.body.style.overflow = 'auto';
+        });
+
+        // 点击模态框外部关闭
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // 按ESC键关闭模态框
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
         });
     </script>
 </body>
