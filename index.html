@@ -576,6 +576,159 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* 历史EHS文件样式 */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #666;
+            font-size: 0.95em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Microsoft YaHei', 'Arial', sans-serif;
+        }
+
+        .tab-btn:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .file-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 10px;
+            border-left: 3px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .file-item:hover {
+            background: #f3f4f6;
+            transform: translateX(5px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .file-icon {
+            font-size: 2em;
+            flex-shrink: 0;
+        }
+
+        .file-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .file-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 0.95em;
+        }
+
+        .file-meta {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .file-date {
+            font-size: 0.85em;
+            color: #999;
+        }
+
+        .file-type {
+            font-size: 0.8em;
+            padding: 2px 10px;
+            background: #dbeafe;
+            color: #1e40af;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .file-action {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.85em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .file-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .tabs {
+                gap: 5px;
+            }
+
+            .tab-btn {
+                padding: 10px 12px;
+                font-size: 0.85em;
+                flex: 1;
+                text-align: center;
+            }
+
+            .file-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .file-action {
+                align-self: stretch;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -607,8 +760,8 @@
 
             <div class="stat-card health">
                 <h3><span class="icon">❤️</span>健康指标</h3>
-                <div class="stat-value" id="healthRate">98%</div>
-                <div class="stat-label">体检合格率</div>
+                <div class="stat-value" id="healthRate">100%</div>
+                <div class="stat-label">职业病健康体检合格率</div>
                 <span class="status-badge status-normal">优秀</span>
             </div>
 
@@ -686,30 +839,25 @@
             </div>
 
             <div class="section">
-                <h2><span class="icon">🏥</span>职业健康</h2>
+                <h2><span class="icon">🔄</span>周期性监控</h2>
                 <div class="metric">
-                    <span class="metric-name">年度体检完成率</span>
-                    <span class="metric-value" style="color: #10b981;">98%</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 98%;"></div>
-                </div>
-
-                <div class="metric" style="margin-top: 15px;">
-                    <span class="metric-name">职业病筛查</span>
-                    <span class="metric-value" style="color: #10b981;">已完成</span>
+                    <span class="metric-name">🔍 安全检查</span>
+                    <span class="metric-value" style="color: #667eea;">每月月底倒数第三个工作日</span>
                 </div>
                 <div class="metric">
-                    <span class="metric-name">健康档案建档率</span>
-                    <span class="metric-value" style="color: #10b981;">100%</span>
+                    <span class="metric-name">🧯 灭火器点检</span>
+                    <span class="metric-value" style="color: #f59e0b;">每月15日</span>
                 </div>
                 <div class="metric">
-                    <span class="metric-name">防护用品配备率</span>
-                    <span class="metric-value" style="color: #10b981;">100%</span>
+                    <span class="metric-name">☢️ 辐射环境监测</span>
+                    <span class="metric-value" style="color: #10b981;">每年11月1日</span>
                 </div>
                 <div class="metric">
-                    <span class="metric-name">健康培训</span>
-                    <span class="metric-value" style="color: #3b82f6;">本月4场</span>
+                    <span class="metric-name">🏥 职业健康体检</span>
+                    <span class="metric-value" style="color: #ef4444;">每年11月1日</span>
+                </div>
+                <div style="margin-top: 15px; padding: 12px; background: #f0f9ff; border-left: 3px solid #3b82f6; border-radius: 5px;">
+                    <span style="color: #1e40af; font-size: 0.9em;">💡 提示：所有任务将在到期前7天通过临期提醒模块进行通知</span>
                 </div>
             </div>
 
@@ -721,20 +869,9 @@
             </div>
 
             <div class="section">
-                <h2><span class="icon">🔔</span>实时告警</h2>
-                <ul class="alert-list">
-                    <li class="alert-item info">
-                        <span>ℹ️</span>
-                        <span>3号实验室温度偏高，已自动调节空调</span>
-                    </li>
-                    <li class="alert-item info">
-                        <span>ℹ️</span>
-                        <span>下周三进行消防演练，请各部门做好准备</span>
-                    </li>
-                    <li class="alert-item info">
-                        <span>✓</span>
-                        <span>今日安全检查已完成，未发现异常</span>
-                    </li>
+                <h2><span class="icon">🔔</span>临期提醒</h2>
+                <ul class="alert-list" id="reminderList">
+                    <!-- 动态生成提醒内容 -->
                 </ul>
             </div>
 
@@ -759,6 +896,240 @@
                 <div class="metric">
                     <span class="metric-name">应急演练</span>
                     <span class="metric-value" style="color: #666;">待安排</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2><span class="icon">📁</span>历史EHS文件</h2>
+
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="environment">🌱 环境</button>
+                    <button class="tab-btn" data-tab="safety">🛡️ 安全</button>
+                    <button class="tab-btn" data-tab="health">❤️ 健康</button>
+                </div>
+
+                <div class="tab-content active" id="environment">
+                    <div class="file-list">
+                        <div class="file-item">
+                            <div class="file-icon">✅</div>
+                            <div class="file-info">
+                                <div class="file-name">汽车零部件加工项目验收报告.pdf</div>
+                                <div class="file-meta">
+                                    <span class="file-date">2024-08-15</span>
+                                    <span class="file-type" style="background: #bbf7d0; color: #14532d;">验收报告</span>
+                                </div>
+                            </div>
+                            <a href="D:\zhangkai30\Downloads\（盖章版）理想汽车有限公司常州分公司汽车零部件加工项目验收报告 (1).pdf" target="_blank" class="file-action">查看</a>
+                        </div>
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-info">
+                                <div class="file-name">汽车零部件加工项目环评批复.pdf</div>
+                                <div class="file-meta">
+                                    <span class="file-date">2024-06-29</span>
+                                    <span class="file-type" style="background: #bbf7d0; color: #14532d;">环评批复</span>
+                                </div>
+                            </div>
+                            <a href="D:\zhangkai30\Downloads\汽车零部件加工项目环评批复0629(1) (1).pdf" target="_blank" class="file-action">查看</a>
+                        </div>
+                        <div class="file-item">
+                            <div class="file-icon">📝</div>
+                            <div class="file-info">
+                                <div class="file-name">理想汽车创新实验室项目节能报告.doc</div>
+                                <div class="file-meta">
+                                    <span class="file-date">2024-05-15</span>
+                                    <span class="file-type" style="background: #bbf7d0; color: #14532d;">节能报告</span>
+                                </div>
+                            </div>
+                            <a href="D:\zhangkai30\Downloads\附件6--理想汽车创新实验室科技（江苏）有限公司理想汽车创新实验室项目节能报告.doc" target="_blank" class="file-action">查看</a>
+                        </div>
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-info">
+                                <div class="file-name">环评批复.pdf</div>
+                                <div class="file-meta">
+                                    <span class="file-date">2024-04-20</span>
+                                    <span class="file-type" style="background: #bbf7d0; color: #14532d;">环评批复</span>
+                                </div>
+                            </div>
+                            <a href="D:\zhangkai30\Downloads\3环评批复.pdf" target="_blank" class="file-action">查看</a>
+                        </div>
+                        <div class="file-item">
+                            <div class="file-icon">⚠️</div>
+                            <div class="file-info">
+                                <div class="file-name">突发性环境事件应急预案.docx</div>
+                                <div class="file-meta">
+                                    <span class="file-date">2024-03-10</span>
+                                    <span class="file-type" style="background: #bbf7d0; color: #14532d;">应急预案</span>
+                                </div>
+                            </div>
+                            <a href="D:\zhangkai30\Downloads\1-1突发性环境事件应急预案 (1).docx" target="_blank" class="file-action">查看</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="safety">
+                    <div class="file-list">
+                        <div class="file-item">
+                            <div class="file-icon">🚨</div>
+                            <div class="file-info">
+                                <div class="file-name">警报系统分布图及覆盖范围.png</div>
+                                <div class="file-meta">
+                                    <span class="file-date">2025-03-15</span>
+                                    <span class="file-type" style="background: #fed7aa; color: #9a3412;">应急预案</span>
+                                </div>
+                            </div>
+                            <a href="D:\Kane\安全资料\5.安全应急预案编制相关资料\8.警报系统分布图及覆盖范围-3.png" target="_blank" class="file-action">查看</a>
+                        </div>
+                        <div class="file-item">
+                            <div class="file-icon">🧯</div>
+                            <div class="file-info">
+                                <div class="file-name">消防器材分布图-1.png</div>
+                                <div class="file-meta">
+                                    <span class="file-date">2025-03-15</span>
+                                    <span class="file-type" style="background: #fed7aa; color: #9a3412;">应急预案</span>
+                                </div>
+                            </div>
+                            <a href="D:\Kane\安全资料\5.安全应急预案编制相关资料\9.消防器材分布图-1.png" target="_blank" class="file-action">查看</a>
+                        </div>
+                        <div class="file-item">
+                            <div class="file-icon">🧯</div>
+                            <div class="file-info">
+                                <div class="file-name">消防器材分布图-2.png</div>
+                                <div class="file-meta">
+                                    <span class="file-date">2025-03-15</span>
+                                    <span class="file-type" style="background: #fed7aa; color: #9a3412;">应急预案</span>
+                                </div>
+                            </div>
+                            <a href="D:\Kane\安全资料\5.安全应急预案编制相关资料\9.消防器材分布图-2.png" target="_blank" class="file-action">查看</a>
+                        </div>
+                        <div class="file-item">
+                            <div class="file-icon">🧯</div>
+                            <div class="file-info">
+                                <div class="file-name">消防器材分布图-3.png</div>
+                                <div class="file-meta">
+                                    <span class="file-date">2025-03-15</span>
+                                    <span class="file-type" style="background: #fed7aa; color: #9a3412;">应急预案</span>
+                                </div>
+                            </div>
+                            <a href="D:\Kane\安全资料\5.安全应急预案编制相关资料\9.消防器材分布图-3.png" target="_blank" class="file-action">查看</a>
+                        </div>
+                        <div class="file-item">
+                            <div class="file-icon">🛡️</div>
+                            <div class="file-info">
+                                <div class="file-name">防护区域.pdf</div>
+                                <div class="file-meta">
+                                    <span class="file-date">2025-03-15</span>
+                                    <span class="file-type" style="background: #fed7aa; color: #9a3412;">应急预案</span>
+                                </div>
+                            </div>
+                            <a href="D:\Kane\安全资料\5.安全应急预案编制相关资料\10.防护区域.pdf" target="_blank" class="file-action">查看</a>
+                        </div>
+                        <div class="file-item">
+                            <div class="file-icon">📍</div>
+                            <div class="file-info">
+                                <div class="file-name">影响范围图.png</div>
+                                <div class="file-meta">
+                                    <span class="file-date">2025-03-15</span>
+                                    <span class="file-type" style="background: #fed7aa; color: #9a3412;">应急预案</span>
+                                </div>
+                            </div>
+                            <a href="D:\Kane\安全资料\5.安全应急预案编制相关资料\11.影响范围图.png" target="_blank" class="file-action">查看</a>
+                        </div>
+                        <div class="file-item">
+                            <div class="file-icon">🏥</div>
+                            <div class="file-info">
+                                <div class="file-name">附近医院地理位置图及路线图.png</div>
+                                <div class="file-meta">
+                                    <span class="file-date">2025-03-15</span>
+                                    <span class="file-type" style="background: #fed7aa; color: #9a3412;">应急预案</span>
+                                </div>
+                            </div>
+                            <a href="D:\Kane\安全资料\5.安全应急预案编制相关资料\12.附近医院地理位置图及路线图.png" target="_blank" class="file-action">查看</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="health">
+                    <div class="file-list">
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-info">
+                                <div class="file-name">江苏理想汽车智能科技有限公司报价.pdf</div>
+                                <div class="file-meta">
+                                    <span class="file-date">2025-01-15</span>
+                                    <span class="file-type" style="background: #fee2e2; color: #991b1b;">检测报价</span>
+                                </div>
+                            </div>
+                            <a href="D:\Kane\职业病危害因素检测\江苏理想汽车智能科技有限公司报价.pdf" target="_blank" class="file-action">查看</a>
+                        </div>
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-info">
+                                <div class="file-name">江苏理想汽车智能科技有限公司检测方案.docx</div>
+                                <div class="file-meta">
+                                    <span class="file-date">2025-01-15</span>
+                                    <span class="file-type" style="background: #fee2e2; color: #991b1b;">检测方案</span>
+                                </div>
+                            </div>
+                            <a href="D:\Kane\职业病危害因素检测\江苏理想汽车智能科技有限公司检测方案.docx" target="_blank" class="file-action">查看</a>
+                        </div>
+                        <div class="file-item">
+                            <div class="file-icon">🩺</div>
+                            <div class="file-info">
+                                <div class="file-name">职业风险检测.pdf</div>
+                                <div class="file-meta">
+                                    <span class="file-date">2025-01-10</span>
+                                    <span class="file-type" style="background: #fee2e2; color: #991b1b;">风险检测</span>
+                                </div>
+                            </div>
+                            <a href="D:\Kane\职业病危害因素检测\职业风险检测.pdf" target="_blank" class="file-action">查看</a>
+                        </div>
+                        <div class="file-item">
+                            <div class="file-icon">📝</div>
+                            <div class="file-info">
+                                <div class="file-name">职业卫生检测合同盖章版.pdf</div>
+                                <div class="file-meta">
+                                    <span class="file-date">2024-12-20</span>
+                                    <span class="file-type" style="background: #fecaca; color: #7f1d1d;">检测合同</span>
+                                </div>
+                            </div>
+                            <a href="D:\Kane\职业病危害因素检测\职业卫生检测合同盖章版.pdf" target="_blank" class="file-action">查看</a>
+                        </div>
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-info">
+                                <div class="file-name">职业卫生申报.pdf</div>
+                                <div class="file-meta">
+                                    <span class="file-date">2024-12-15</span>
+                                    <span class="file-type" style="background: #fee2e2; color: #991b1b;">卫生申报</span>
+                                </div>
+                            </div>
+                            <a href="D:\Kane\职业病危害因素检测\职业卫生申报.pdf" target="_blank" class="file-action">查看</a>
+                        </div>
+                        <div class="file-item">
+                            <div class="file-icon">📝</div>
+                            <div class="file-info">
+                                <div class="file-name">职业卫生委托检测合同盖章.pdf</div>
+                                <div class="file-meta">
+                                    <span class="file-date">2024-12-10</span>
+                                    <span class="file-type" style="background: #fecaca; color: #7f1d1d;">委托合同</span>
+                                </div>
+                            </div>
+                            <a href="D:\Kane\职业病危害因素检测\职业卫生委托检测合同盖章.pdf" target="_blank" class="file-action">查看</a>
+                        </div>
+                        <div class="file-item">
+                            <div class="file-icon">🏢</div>
+                            <div class="file-info">
+                                <div class="file-name">宏祥营业执照.pdf</div>
+                                <div class="file-meta">
+                                    <span class="file-date">2024-11-20</span>
+                                    <span class="file-type" style="background: #fee2e2; color: #991b1b;">营业执照</span>
+                                </div>
+                            </div>
+                            <a href="D:\Kane\职业病危害因素检测\宏祥营业执照.pdf" target="_blank" class="file-action">查看</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -887,43 +1258,160 @@
             const msUntilMidnight = getMillisecondsUntilMidnight();
             setTimeout(() => {
                 updateSafetyDays();
+                generateReminders(); // 同时更新临期提醒
                 // 递归设置下一次零点更新
                 scheduleNextMidnightUpdate();
             }, msUntilMidnight);
         }
 
-        // 模拟实时数据更新
-        function simulateRealTimeData() {
-            // 温度在21-24度之间波动
-            const temp = (21 + Math.random() * 3).toFixed(1);
-            document.getElementById('temperature').textContent = temp + '°C';
-
-            // 湿度在40-50%之间波动
-            const humidity = Math.floor(40 + Math.random() * 10);
-            document.getElementById('humidity').textContent = humidity + '%';
-
-            // PM2.5在10-20之间波动
-            const pm25 = Math.floor(10 + Math.random() * 10);
-            document.getElementById('pm25').textContent = pm25 + ' μg/m³';
-
-            // 噪音在40-45dB之间波动
-            const noise = Math.floor(40 + Math.random() * 5);
-            document.getElementById('noise').textContent = noise + ' dB';
+        // 临期提醒功能
+        function isWorkday(date) {
+            const day = date.getDay();
+            return day !== 0 && day !== 6; // 0是周日，6是周六
         }
+
+        // 计算某月最后一个工作日
+        function getLastWorkdayOfMonth(year, month) {
+            let date = new Date(year, month + 1, 0); // 月份的最后一天
+            while (!isWorkday(date)) {
+                date.setDate(date.getDate() - 1);
+            }
+            return date;
+        }
+
+        // 计算某月倒数第N个工作日
+        function getNthLastWorkdayOfMonth(year, month, n) {
+            let lastWorkday = getLastWorkdayOfMonth(year, month);
+            let count = 1;
+
+            while (count < n) {
+                lastWorkday.setDate(lastWorkday.getDate() - 1);
+                if (isWorkday(lastWorkday)) {
+                    count++;
+                }
+            }
+            return lastWorkday;
+        }
+
+        // 计算两个日期之间的天数差
+        function daysBetween(date1, date2) {
+            const oneDay = 24 * 60 * 60 * 1000;
+            const diffDays = Math.round((date2 - date1) / oneDay);
+            return diffDays;
+        }
+
+        // 生成临期提醒
+        function generateReminders() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const reminders = [];
+
+            // 1. 每月月底倒数第三个工作日进行安全检查
+            const currentYear = today.getFullYear();
+            const currentMonth = today.getMonth();
+            const safetyCheckDate = getNthLastWorkdayOfMonth(currentYear, currentMonth, 3);
+            const daysToSafetyCheck = daysBetween(today, safetyCheckDate);
+
+            if (daysToSafetyCheck >= 0 && daysToSafetyCheck <= 7) {
+                const urgencyClass = daysToSafetyCheck <= 3 ? 'warning' : 'info';
+                reminders.push({
+                    icon: '🔍',
+                    class: urgencyClass,
+                    text: `安全检查将在${daysToSafetyCheck === 0 ? '今天' : daysToSafetyCheck + '天后'}进行（${safetyCheckDate.getMonth() + 1}月${safetyCheckDate.getDate()}日）`
+                });
+            }
+
+            // 2. 每月15日进行灭火器点检
+            const extinguisherCheckDate = new Date(currentYear, currentMonth, 15);
+            let daysToExtinguisherCheck = daysBetween(today, extinguisherCheckDate);
+
+            // 如果本月15日已过，检查下月15日
+            if (daysToExtinguisherCheck < 0) {
+                extinguisherCheckDate.setMonth(currentMonth + 1);
+                daysToExtinguisherCheck = daysBetween(today, extinguisherCheckDate);
+            }
+
+            if (daysToExtinguisherCheck >= 0 && daysToExtinguisherCheck <= 7) {
+                const urgencyClass = daysToExtinguisherCheck <= 3 ? 'warning' : 'info';
+                reminders.push({
+                    icon: '🧯',
+                    class: urgencyClass,
+                    text: `灭火器点检将在${daysToExtinguisherCheck === 0 ? '今天' : daysToExtinguisherCheck + '天后'}进行（${extinguisherCheckDate.getMonth() + 1}月${extinguisherCheckDate.getDate()}日）`
+                });
+            }
+
+            // 3. 每年11月1日辐射环境监测
+            const radiationCheckDate = new Date(currentYear, 10, 1); // 10是11月（月份从0开始）
+            let daysToRadiationCheck = daysBetween(today, radiationCheckDate);
+
+            // 如果今年11月1日已过，检查明年11月1日
+            if (daysToRadiationCheck < -7) {
+                radiationCheckDate.setFullYear(currentYear + 1);
+                daysToRadiationCheck = daysBetween(today, radiationCheckDate);
+            }
+
+            if (daysToRadiationCheck >= 0 && daysToRadiationCheck <= 7) {
+                const urgencyClass = daysToRadiationCheck <= 3 ? 'warning' : 'info';
+                reminders.push({
+                    icon: '☢️',
+                    class: urgencyClass,
+                    text: `辐射环境监测将在${daysToRadiationCheck === 0 ? '今天' : daysToRadiationCheck + '天后'}进行（${radiationCheckDate.getFullYear()}年11月1日）`
+                });
+            }
+
+            // 4. 每年11月1日职业健康体检
+            const healthCheckDate = new Date(currentYear, 10, 1);
+            let daysToHealthCheck = daysBetween(today, healthCheckDate);
+
+            // 如果今年11月1日已过，检查明年11月1日
+            if (daysToHealthCheck < -7) {
+                healthCheckDate.setFullYear(currentYear + 1);
+                daysToHealthCheck = daysBetween(today, healthCheckDate);
+            }
+
+            if (daysToHealthCheck >= 0 && daysToHealthCheck <= 7) {
+                const urgencyClass = daysToHealthCheck <= 3 ? 'warning' : 'info';
+                reminders.push({
+                    icon: '🏥',
+                    class: urgencyClass,
+                    text: `职业健康体检将在${daysToHealthCheck === 0 ? '今天' : daysToHealthCheck + '天后'}进行（${healthCheckDate.getFullYear()}年11月1日）`
+                });
+            }
+
+            // 渲染提醒列表
+            const reminderList = document.getElementById('reminderList');
+            if (reminders.length === 0) {
+                reminderList.innerHTML = `
+                    <li class="alert-item info">
+                        <span>✓</span>
+                        <span>近期暂无待办事项，一切正常</span>
+                    </li>
+                `;
+            } else {
+                reminderList.innerHTML = reminders.map(reminder => `
+                    <li class="alert-item ${reminder.class}">
+                        <span>${reminder.icon}</span>
+                        <span>${reminder.text}</span>
+                    </li>
+                `).join('');
+            }
+        }
+
 
         // 初始化
         updateTime();
         generateMonthlyChart();
         updateSafetyDays(); // 初始化安全运行天数
+        generateReminders(); // 生成临期提醒
 
         // 每秒更新时间
         setInterval(updateTime, 1000);
 
-        // 每10秒更新一次模拟数据
-        setInterval(simulateRealTimeData, 10000);
-
         // 设置每天零点自动更新安全天数
         scheduleNextMidnightUpdate();
+
+        // 每小时更新一次临期提醒（以防日期变化）
+        setInterval(generateReminders, 60 * 60 * 1000);
 
         // 添加页面加载动画
         window.addEventListener('load', function() {
@@ -975,6 +1463,24 @@
                 modal.style.display = 'none';
                 document.body.style.overflow = 'auto';
             }
+        });
+
+        // 标签页切换功能
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetTab = this.getAttribute('data-tab');
+
+                // 移除所有活动状态
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // 添加活动状态到点击的标签
+                this.classList.add('active');
+                document.getElementById(targetTab).classList.add('active');
+            });
         });
     </script>
 </body>
