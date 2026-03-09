@@ -288,6 +288,22 @@
             .header h1 {
                 font-size: 1.8em;
             }
+
+            .metric-with-button {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .metric-left {
+                width: 100%;
+                margin-right: 0;
+            }
+
+            .task-complete-btn {
+                width: 100%;
+                text-align: center;
+            }
         }
 
         .progress-bar {
@@ -331,6 +347,49 @@
             color: #666;
         }
 
+        /* 任务完成按钮样式 */
+        .task-complete-btn {
+            padding: 5px 15px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Microsoft YaHei', 'Arial', sans-serif;
+        }
+
+        .task-complete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .task-complete-btn:active {
+            transform: translateY(0);
+        }
+
+        .metric-with-button {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .metric-with-button:last-child {
+            border-bottom: none;
+        }
+
+        .metric-left {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-right: 15px;
+        }
+
         /* 模态框样式 */
         .modal {
             display: none;
@@ -348,6 +407,11 @@
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
         }
 
         .modal-content {
@@ -745,7 +809,7 @@
         <div class="main-stats">
             <div class="stat-card environment">
                 <h3><span class="icon">🌱</span>环境指标</h3>
-                <div class="stat-value" id="envScore">95</div>
+                <div class="stat-value" id="envScore">100</div>
                 <div class="stat-label">综合评分</div>
                 <span class="status-badge status-normal">状态正常</span>
             </div>
@@ -781,8 +845,8 @@
                     <span class="metric-value" style="color: #10b981;" id="temperature">22.5°C</span>
                 </div>
                 <div class="metric">
-                    <span class="metric-name">湿度</span>
-                    <span class="metric-value" style="color: #3b82f6;" id="humidity">45%</span>
+                    <span class="metric-name">湿度（≥40%）</span>
+                    <span class="metric-value" style="color: #10b981;" id="humidity">45%</span>
                 </div>
                 <div class="metric">
                     <span class="metric-name">空气质量(PM2.5)</span>
@@ -863,6 +927,7 @@
 
             <div class="section">
                 <h2><span class="icon">📈</span>月度趋势</h2>
+                <div style="margin-bottom: 10px; color: #666; font-size: 0.9em;">不符合项数统计</div>
                 <div class="chart-container">
                     <div class="bar-chart" id="monthlyChart"></div>
                 </div>
@@ -877,25 +942,8 @@
 
             <div class="section">
                 <h2><span class="icon">✅</span>本周工作</h2>
-                <div class="metric">
-                    <span class="metric-name">安全培训</span>
-                    <span class="metric-value" style="color: #10b981;">✓ 已完成</span>
-                </div>
-                <div class="metric">
-                    <span class="metric-name">设备巡检</span>
-                    <span class="metric-value" style="color: #10b981;">✓ 已完成</span>
-                </div>
-                <div class="metric">
-                    <span class="metric-name">环境监测</span>
-                    <span class="metric-value" style="color: #10b981;">✓ 已完成</span>
-                </div>
-                <div class="metric">
-                    <span class="metric-name">健康体检</span>
-                    <span class="metric-value" style="color: #f59e0b;">进行中</span>
-                </div>
-                <div class="metric">
-                    <span class="metric-name">应急演练</span>
-                    <span class="metric-value" style="color: #666;">待安排</span>
+                <div id="weeklyTasksList">
+                    <!-- 动态生成本周工作内容 -->
                 </div>
             </div>
 
@@ -1210,13 +1258,26 @@
         // 生成月度趋势图
         function generateMonthlyChart() {
             const chartContainer = document.getElementById('monthlyChart');
-            const months = ['1月', '2月', '3月', '4月', '5月', '6月'];
-            const data = [85, 88, 92, 90, 94, 95];
+            const today = new Date();
+            const months = [];
+            const data = [8, 5, 7, 3, 4, 2]; // 不符合项数（10以内）
+
+            // 生成从当前月份往前推6个月的月份标签
+            for (let i = 5; i >= 0; i--) {
+                const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
+                const monthLabel = (date.getMonth() + 1) + '月';
+                months.push(monthLabel);
+            }
+
+            // 找出最大值用于计算比例
+            const maxValue = Math.max(...data);
 
             months.forEach((month, index) => {
                 const bar = document.createElement('div');
                 bar.className = 'bar';
-                bar.style.height = data[index] + '%';
+                // 计算高度百分比，最大值对应100%
+                const heightPercent = maxValue > 0 ? (data[index] / maxValue * 100) : 0;
+                bar.style.height = heightPercent + '%';
 
                 const label = document.createElement('div');
                 label.className = 'bar-label';
@@ -1224,7 +1285,7 @@
 
                 const value = document.createElement('div');
                 value.className = 'bar-value';
-                value.textContent = data[index];
+                value.textContent = data[index] + '项'; // 显示"X项"
 
                 bar.appendChild(label);
                 bar.appendChild(value);
@@ -1259,6 +1320,7 @@
             setTimeout(() => {
                 updateSafetyDays();
                 generateReminders(); // 同时更新临期提醒
+                generateWeeklyTasks(); // 同时更新本周工作列表
                 // 递归设置下一次零点更新
                 scheduleNextMidnightUpdate();
             }, msUntilMidnight);
@@ -1397,12 +1459,225 @@
             }
         }
 
+        // 生成任务唯一ID
+        function getTaskId(taskType, date) {
+            return `task_${taskType}_${date.getFullYear()}_${date.getMonth()}_${date.getDate()}`;
+        }
+
+        // 检查任务是否已完成
+        function isTaskCompleted(taskId) {
+            const completedTasks = JSON.parse(localStorage.getItem('completedTasks') || '{}');
+            return completedTasks[taskId] === true;
+        }
+
+        // 标记任务为已完成
+        function markTaskCompleted(taskId) {
+            const completedTasks = JSON.parse(localStorage.getItem('completedTasks') || '{}');
+            completedTasks[taskId] = true;
+            localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
+        }
+
+        // 清理过期的已完成任务记录（保留30天内的记录）
+        function cleanupCompletedTasks() {
+            const completedTasks = JSON.parse(localStorage.getItem('completedTasks') || '{}');
+            const today = new Date();
+            const cleanedTasks = {};
+
+            for (const taskId in completedTasks) {
+                // 从任务ID中提取日期信息
+                const parts = taskId.split('_');
+                if (parts.length >= 5) {
+                    const taskYear = parseInt(parts[2]);
+                    const taskMonth = parseInt(parts[3]);
+                    const taskDay = parseInt(parts[4]);
+                    const taskDate = new Date(taskYear, taskMonth, taskDay);
+                    const daysDiff = daysBetween(taskDate, today);
+
+                    // 保留30天内的记录
+                    if (daysDiff <= 30) {
+                        cleanedTasks[taskId] = completedTasks[taskId];
+                    }
+                }
+            }
+
+            localStorage.setItem('completedTasks', JSON.stringify(cleanedTasks));
+        }
+
+        // 生成本周工作列表
+        function generateWeeklyTasks() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const weeklyTasks = [];
+
+            // 1. 每月月底倒数第三个工作日进行安全检查
+            const currentYear = today.getFullYear();
+            const currentMonth = today.getMonth();
+            const safetyCheckDate = getNthLastWorkdayOfMonth(currentYear, currentMonth, 3);
+            const daysToSafetyCheck = daysBetween(today, safetyCheckDate);
+
+            if (daysToSafetyCheck >= -7 && daysToSafetyCheck <= 7) {
+                let status, color;
+
+                if (daysToSafetyCheck < 0) {
+                    // 已过期，显示已完成
+                    status = '✓ 已完成';
+                    color = '#10b981';
+                } else if (daysToSafetyCheck === 0) {
+                    status = '今天需完成';
+                    color = '#ef4444';
+                } else if (daysToSafetyCheck <= 3) {
+                    status = '进行中';
+                    color = '#f59e0b';
+                } else {
+                    status = '待安排';
+                    color = '#666';
+                }
+
+                weeklyTasks.push({
+                    name: '🔍 安全检查',
+                    status: status,
+                    color: color,
+                    days: daysToSafetyCheck
+                });
+            }
+
+            // 2. 每月15日进行灭火器点检
+            const extinguisherCheckDate = new Date(currentYear, currentMonth, 15);
+            let daysToExtinguisherCheck = daysBetween(today, extinguisherCheckDate);
+
+            // 如果本月15日已过，检查下月15日
+            if (daysToExtinguisherCheck < -7) {
+                extinguisherCheckDate.setMonth(currentMonth + 1);
+                daysToExtinguisherCheck = daysBetween(today, extinguisherCheckDate);
+            }
+
+            if (daysToExtinguisherCheck >= -7 && daysToExtinguisherCheck <= 7) {
+                let status, color;
+
+                if (daysToExtinguisherCheck < 0) {
+                    // 已过期，显示已完成
+                    status = '✓ 已完成';
+                    color = '#10b981';
+                } else if (daysToExtinguisherCheck === 0) {
+                    status = '今天需完成';
+                    color = '#ef4444';
+                } else if (daysToExtinguisherCheck <= 3) {
+                    status = '进行中';
+                    color = '#f59e0b';
+                } else {
+                    status = '待安排';
+                    color = '#666';
+                }
+
+                weeklyTasks.push({
+                    name: '🧯 灭火器点检',
+                    status: status,
+                    color: color,
+                    days: daysToExtinguisherCheck
+                });
+            }
+
+            // 3. 每年11月1日辐射环境监测
+            const radiationCheckDate = new Date(currentYear, 10, 1);
+            let daysToRadiationCheck = daysBetween(today, radiationCheckDate);
+
+            // 如果今年11月1日已过，检查明年11月1日
+            if (daysToRadiationCheck < -7) {
+                radiationCheckDate.setFullYear(currentYear + 1);
+                daysToRadiationCheck = daysBetween(today, radiationCheckDate);
+            }
+
+            if (daysToRadiationCheck >= -7 && daysToRadiationCheck <= 7) {
+                let status, color;
+
+                if (daysToRadiationCheck < 0) {
+                    // 已过期，显示已完成
+                    status = '✓ 已完成';
+                    color = '#10b981';
+                } else if (daysToRadiationCheck === 0) {
+                    status = '今天需完成';
+                    color = '#ef4444';
+                } else if (daysToRadiationCheck <= 3) {
+                    status = '进行中';
+                    color = '#f59e0b';
+                } else {
+                    status = '待安排';
+                    color = '#666';
+                }
+
+                weeklyTasks.push({
+                    name: '☢️ 辐射环境监测',
+                    status: status,
+                    color: color,
+                    days: daysToRadiationCheck
+                });
+            }
+
+            // 4. 每年11月1日职业健康体检
+            const healthCheckDate = new Date(currentYear, 10, 1);
+            let daysToHealthCheck = daysBetween(today, healthCheckDate);
+
+            // 如果今年11月1日已过，检查明年11月1日
+            if (daysToHealthCheck < -7) {
+                healthCheckDate.setFullYear(currentYear + 1);
+                daysToHealthCheck = daysBetween(today, healthCheckDate);
+            }
+
+            if (daysToHealthCheck >= -7 && daysToHealthCheck <= 7) {
+                let status, color;
+
+                if (daysToHealthCheck < 0) {
+                    // 已过期，显示已完成
+                    status = '✓ 已完成';
+                    color = '#10b981';
+                } else if (daysToHealthCheck === 0) {
+                    status = '今天需完成';
+                    color = '#ef4444';
+                } else if (daysToHealthCheck <= 3) {
+                    status = '进行中';
+                    color = '#f59e0b';
+                } else {
+                    status = '待安排';
+                    color = '#666';
+                }
+
+                weeklyTasks.push({
+                    name: '🏥 职业健康体检',
+                    status: status,
+                    color: color,
+                    days: daysToHealthCheck
+                });
+            }
+
+            // 按照紧急程度排序
+            weeklyTasks.sort((a, b) => a.days - b.days);
+
+            // 渲染本周工作列表
+            const weeklyTasksList = document.getElementById('weeklyTasksList');
+            if (weeklyTasks.length === 0) {
+                weeklyTasksList.innerHTML = `
+                    <div class="metric">
+                        <span class="metric-name">暂无近期任务</span>
+                        <span class="metric-value" style="color: #10b981;">✓ 一切正常</span>
+                    </div>
+                `;
+            } else {
+                weeklyTasksList.innerHTML = weeklyTasks.map(task => `
+                    <div class="metric">
+                        <span class="metric-name">${task.name}</span>
+                        <span class="metric-value" style="color: ${task.color};">${task.status}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
 
         // 初始化
         updateTime();
         generateMonthlyChart();
         updateSafetyDays(); // 初始化安全运行天数
         generateReminders(); // 生成临期提醒
+        generateWeeklyTasks(); // 生成本周工作列表
 
         // 每秒更新时间
         setInterval(updateTime, 1000);
@@ -1410,8 +1685,11 @@
         // 设置每天零点自动更新安全天数
         scheduleNextMidnightUpdate();
 
-        // 每小时更新一次临期提醒（以防日期变化）
-        setInterval(generateReminders, 60 * 60 * 1000);
+        // 每小时更新一次临期提醒和本周工作（以防日期变化）
+        setInterval(() => {
+            generateReminders();
+            generateWeeklyTasks();
+        }, 60 * 60 * 1000);
 
         // 添加页面加载动画
         window.addEventListener('load', function() {
